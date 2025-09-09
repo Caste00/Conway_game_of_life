@@ -1,4 +1,4 @@
 # Conway game of life
 
-la prima bozza sarà in python e funzionerà su terminale
-la seconda versione sarà in rust e bevy
+Una versione di base per il gioco della vita di Conway
+In futuro prevedo di ricreare una versione in rust e Bevy come esercitazione al linguaggio e alla programmazione ECS
