@@ -8,10 +8,28 @@ def load_world(filename):
             line = line.strip()
             if not line:
                 continue
-            row = [c == "#" for c in line]
+            row = []
+            for c in line:
+                if c == "#":
+                    row.append(True)
+                else:
+                    row.append(False)
             world.append(row)
     return world
         
+        
+def espandi_world(world, larghezza, altezza):
+    new_world = [[False] * larghezza for _ in range(altezza)]
+    offset_x = (altezza - len(world)) // 2
+    offset_y = (larghezza - len(world[0])) // 2
+
+    for x in range(len(world)):
+        for y in range(len(world[0])):
+            new_world[offset_x + x][offset_y + y] = world[x][y]
+
+    return new_world
+
+
         
 def numero_celle_vive_nei_dintorni(world, x, y):
     numero_celle = 0
@@ -42,18 +60,24 @@ def un_ciclo(world):
     for x in range(len(world)):
         for y in range(len(world[0])):
             numero_vicini_vivi = numero_celle_vive_nei_dintorni(world, x, y)
-            if numero_vicini_vivi <= 1 or numero_vicini_vivi >= 4:
-                new_world[x][y] = False
-            else: 
-                new_world[x][y] = True
+            if world[x][y]:
+                if numero_vicini_vivi < 2 or numero_vicini_vivi > 3:
+                    new_world[x][y] = False
+                else: 
+                    new_world[x][y] = True
+            else:
+                if numero_vicini_vivi == 3:
+                    new_world[x][y] = True
                 
     return new_world
             
 
 if __name__ == "__main__":
+    world = load_world("./world.txt")
+    world = espandi_world(world, 40, 40)
     while True:
         world = un_ciclo(world)
         stampa_world(world)
-        time.sleep(0.5)
+        time.sleep(0.2)
         os.system('clear')
     
